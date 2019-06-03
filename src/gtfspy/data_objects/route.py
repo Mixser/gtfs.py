@@ -1,6 +1,5 @@
-import gtfspy
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.utils.validating import not_none_or_empty, validate_yes_no_unknown
+from .base_object import BaseGtfsObjectCollection
+from ..utils.validating import not_none_or_empty
 
 
 class Route(object):
@@ -28,7 +27,7 @@ class Route(object):
         self.route_type = int(route_type)
         self.agency = transit_data.agencies[int(agency_id)]
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(route_desc):
             self.attributes["route_desc"] = str(route_desc)
         if not_none_or_empty(route_url):
@@ -164,7 +163,8 @@ class Route(object):
         return res
 
     def get_csv_fields(self):
-        return ["route_id", "route_short_name", "route_long_name", "route_type", "agency_id"] + self.attributes.keys()
+        return ["route_id", "route_short_name", "route_long_name", "route_type", "agency_id"] + \
+               list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(route_id=self.id,
@@ -181,7 +181,7 @@ class Route(object):
         """
 
         assert transit_data.agencies[self.agency.id] is self.agency
-        assert self.route_type in xrange(0, 8)
+        # assert self.route_type in range(0, 8)
 
     def __eq__(self, other):
         if not isinstance(other, Route):

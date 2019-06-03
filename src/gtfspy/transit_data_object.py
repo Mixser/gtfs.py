@@ -1,10 +1,11 @@
+import io
 import os
 import shutil
 import tempfile
 import zipfile
 from zipfile import ZipFile
 
-from gtfspy.data_objects import *
+from .data_objects import *
 
 
 class TransitData(object):
@@ -72,6 +73,7 @@ class TransitData(object):
                 self.stops._load_file(stops_file, ignore_errors=partial is not None)
 
             with zip_file.open("stop_times.txt", "r") as stop_times_file:
+                stop_times_file = io.TextIOWrapper(stop_times_file)
                 reader = csv.DictReader(stop_times_file)
                 for row in reader:
                     try:
@@ -121,7 +123,7 @@ class TransitData(object):
         if validate:
             self.validate()
 
-    def save(self, file_path, compression=zipfile.ZIP_DEFLATED, validate=True):
+    def save(self, file_path=None, compression=zipfile.ZIP_DEFLATED, validate=True):
         if validate:
             self.validate()
 
@@ -129,29 +131,29 @@ class TransitData(object):
         temp_gtfs_file_path = tempfile.mktemp(suffix=".zip")
 
         try:
-            with open(os.path.join(tempdir, "agency.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "agency.txt"), "w", encoding='utf-8') as f:
                 self.agencies.save(f)
 
-            with open(os.path.join(tempdir, "routes.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "routes.txt"), "w", encoding='utf-8') as f:
                 self.routes.save(f)
 
-            with open(os.path.join(tempdir, "shapes.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "shapes.txt"), "w", encoding='utf-8') as f:
                 self.shapes.save(f)
 
-            with open(os.path.join(tempdir, "calendar.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "calendar.txt"), "w", encoding='utf-8') as f:
                 self.calendar.save(f)
 
-            with open(os.path.join(tempdir, "trips.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "trips.txt"), "w", encoding='utf-8') as f:
                 self.trips.save(f)
 
-            with open(os.path.join(tempdir, "stops.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "stops.txt"), "w", encoding='utf-8') as f:
                 self.stops.save(f)
 
             fields = []
             for trip in self.trips:
                 for stop_time in trip.stop_times:
                     fields += (field for field in stop_time.get_csv_fields() if field not in fields)
-            with open(os.path.join(tempdir, "stop_times.txt"), "wb") as f:
+            with open(os.path.join(tempdir, "stop_times.txt"), "w", encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=fields, restval=None)
                 writer.writeheader()
                 for trip in self.trips:
@@ -159,24 +161,27 @@ class TransitData(object):
                         writer.writerow(stop_time.to_csv_line())
 
             if self.translator.has_data():
-                with open(os.path.join(tempdir, "translations.txt"), "wb") as f:
+                with open(os.path.join(tempdir, "translations.txt"), "w", encoding='utf-8') as f:
                     self.translator.save(f)
 
             if self.fare_rules.has_data():
-                with open(os.path.join(tempdir, "fare_attributes.txt"), "wb") as f:
+                with open(os.path.join(tempdir, "fare_attributes.txt"), "w", encoding='utf-8') as f:
                     self.fare_attributes.save(f)
 
-                with open(os.path.join(tempdir, "fare_rules.txt"), "wb") as f:
+                with open(os.path.join(tempdir, "fare_rules.txt"), "w", encoding='utf-8') as f:
                     self.fare_rules.save(f)
 
-            for file_name, file_data in self.unknown_files.iteritems():
-                with open(os.path.join(tempdir, file_name), "wb") as f:
-                    f.write(file_data.data)
-
-            with ZipFile(temp_gtfs_file_path, mode="w", compression=compression) as zip_file:
-                for file_name in os.listdir(tempdir):
-                    zip_file.write(os.path.join(tempdir, file_name), arcname=file_name)
-            shutil.move(temp_gtfs_file_path, file_path)
+            if file_path is None:
+                buffer = io.BytesIO()
+                with ZipFile(buffer, mode="w", compression=compression) as zip_file:
+                    for file_name in os.listdir(tempdir):
+                        zip_file.write(os.path.join(tempdir, file_name), arcname=file_name)
+                return buffer.getvalue()
+            else:
+                with ZipFile(temp_gtfs_file_path, mode="w", compression=compression) as zip_file:
+                    for file_name in os.listdir(tempdir):
+                        zip_file.write(os.path.join(tempdir, file_name), arcname=file_name)
+                shutil.move(temp_gtfs_file_path, file_path)
         finally:
             if os.path.exists(tempdir) and os.path.isdir(tempdir):
                 shutil.rmtree(tempdir)

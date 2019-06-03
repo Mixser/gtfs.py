@@ -1,8 +1,6 @@
-
-import gtfspy
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.data_objects.line import LineCollection
-from gtfspy.utils.validating import not_none_or_empty
+from .base_object import BaseGtfsObjectCollection
+from .line import LineCollection
+from ..utils.validating import not_none_or_empty
 
 
 class Agency(object):
@@ -25,7 +23,7 @@ class Agency(object):
         self.agency_url = agency_url
         self.agency_timezone = agency_timezone
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(agency_lang):
             self.attributes["agency_lang"] = str(agency_lang)
         if not_none_or_empty(agency_phone):
@@ -109,7 +107,7 @@ class Agency(object):
         return self.lines.get_line(route)
 
     def get_csv_fields(self):
-        return ["agency_id", "agency_name", "agency_url", "agency_timezone"] + self.attributes.keys()
+        return ["agency_id", "agency_name", "agency_url", "agency_timezone"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(agency_id=self.id,

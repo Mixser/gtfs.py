@@ -1,7 +1,7 @@
-from cStringIO import StringIO
+from io import StringIO
 
-from gtfspy.data_objects import UnknownFile
-from gtfspy.transit_data_object import TransitData
+from .data_objects import UnknownFile
+from .transit_data_object import TransitData
 
 
 def clone_transit_data(transit_data):
@@ -30,7 +30,7 @@ def clone_transit_data(transit_data):
     for fare_rule in transit_data.fare_rules:
         new_transit_data.fare_rules.add_object(fare_rule, recursive=False)
 
-    for file_name, file_data in transit_data.unknown_files.iteritems():
+    for file_name, file_data in transit_data.unknown_files.items():
         dome_file = StringIO()
         dome_file.write(file_data.data)
         new_transit_data.unknown_files[file_name] = UnknownFile(dome_file)
@@ -49,7 +49,7 @@ def create_partial_transit_data(transit_data, lines, add_unknown_files=True):
 
     new_transit_data = TransitData()
 
-    for agency_id, line_numbers in lines.iteritems():
+    for agency_id, line_numbers in lines.items():
         agency = transit_data.agencies[agency_id]
         new_transit_data.agencies.add_object(agency, recursive=False)
         for line in transit_data.agencies[agency_id].lines:
@@ -75,7 +75,7 @@ def create_partial_transit_data(transit_data, lines, add_unknown_files=True):
             new_transit_data.fare_rules.add_object(fare_rule, recursive=True)
 
     if add_unknown_files:
-        for file_name, file_data in transit_data.unknown_files.iteritems():
+        for file_name, file_data in transit_data.unknown_files.items():
             dome_file = StringIO()
             dome_file.write(file_data.data)
             new_transit_data.unknown_files[file_name] = UnknownFile(dome_file)

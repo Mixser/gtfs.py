@@ -1,8 +1,7 @@
-import gtfspy
-from gtfspy.data_objects import Agency
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.utils.parsing import parse_or_default
-from gtfspy.utils.validating import not_none_or_empty
+from .agency import Agency
+from .base_object import BaseGtfsObjectCollection
+from ..utils.parsing import parse_or_default
+from ..utils.validating import not_none_or_empty
 
 
 class FareAttribute(object):
@@ -15,7 +14,7 @@ class FareAttribute(object):
         self.payment_method = int(payment_method)
         self.transfers = parse_or_default(transfers, None, int)
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(agency_id):
             self.attributes["agency_id"] = transit_data.agencies[int(agency_id)]
         if not_none_or_empty(transfer_duration):
@@ -74,7 +73,7 @@ class FareAttribute(object):
         self.attributes["transfer_duration"] = value
 
     def get_csv_fields(self):
-        return ["fare_id", "price", "currency_type", "payment_method", "transfers"] + self.attributes.keys()
+        return ["fare_id", "price", "currency_type", "payment_method", "transfers"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(fare_id=self.id,
@@ -96,8 +95,8 @@ class FareAttribute(object):
 
         # TODO: validate ISO4217 codes
         assert self.price >= 0
-        assert self.payment_method in xrange(0, 2)
-        assert self.transfers in xrange(0, 3)
+        assert self.payment_method in range(0, 2)
+        assert self.transfers in range(0, 3)
         assert self.transfer_duration is None or self.transfer_duration >= 0
 
     def __eq__(self, other):
@@ -105,8 +104,8 @@ class FareAttribute(object):
             return False
 
         return self.id == other.id and self.price == other.price and \
-               self.currency_type == other.currency_type and self.payment_method == other.payment_method and \
-               self.transfers == other.transfers and self.attributes == other.attributes
+            self.currency_type == other.currency_type and self.payment_method == other.payment_method and \
+            self.transfers == other.transfers and self.attributes == other.attributes
 
     def __ne__(self, other):
         return not (self == other)

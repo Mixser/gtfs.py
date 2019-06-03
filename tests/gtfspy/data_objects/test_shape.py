@@ -19,7 +19,7 @@ class TestShape(unittest.TestCase):
         for row in MINI_SHAPE_CSV_ROWS:
             shape_point = td.shapes.add(**row)
 
-        shape = iter(td.shapes).next()
+        shape = iter(td.shapes).__next__()
         self.assertTrue(hasattr(shape, "id"))
         self.assertRaises(Exception, setattr, shape, "id", "2")
 
@@ -34,7 +34,7 @@ class TestShape(unittest.TestCase):
         for row in FULL_SHAPE_CSV_ROWS:
             shape_point = td.shapes.add(**row)
 
-        shape = iter(td.shapes).next()
+        shape = iter(td.shapes).__next__()
         self.assertTrue(hasattr(shape, "id"))
         self.assertRaises(Exception, setattr, shape, "id", "2")
 
@@ -56,7 +56,7 @@ class TestShape(unittest.TestCase):
             td = TransitData()
             for row in rows:
                 td.shapes.add(**row)
-            shape = iter(td.shapes).next()
+            shape = iter(td.shapes).__next__()
             self.assertListEqual(list(shape.to_csv_line()), rows)
 
     def test_get_csv_fields(self):
@@ -64,9 +64,9 @@ class TestShape(unittest.TestCase):
             td = TransitData()
             for row in rows:
                 td.shapes.add(**row)
-            shape = iter(td.shapes).next()
+            shape = iter(td.shapes).__next__()
             self.assertListEqual(sorted(shape.get_csv_fields()),
-                                 sorted(list({key for row in rows for key in row.iterkeys()})))
+                                 sorted(list({key for row in rows for key in row.keys()})))
 
     def test_equal_operator(self):
         for rows in ALL_CSV_ROWS:
@@ -76,7 +76,7 @@ class TestShape(unittest.TestCase):
                 shape_point1 = td1.shapes.add(**row)
                 shape_point2 = td2.shapes.add(**row)
                 self.assertEqual(shape_point1, shape_point2)
-            self.assertEqual(iter(td1.shapes).next(), iter(td2.shapes).next())
+            self.assertEqual(iter(td1.shapes).__next__(), iter(td2.shapes).__next__())
 
     def test_not_equal_operator(self):
         original_td = TransitData()
@@ -87,44 +87,44 @@ class TestShape(unittest.TestCase):
         rows = [dict(row) for row in FULL_SHAPE_CSV_ROWS]
         for row in rows:
             row["shape_id"] = 10
-        for row, original_shape_point in zip(rows, iter(original_td.shapes).next().shape_points):
+        for row, original_shape_point in zip(rows, iter(original_td.shapes).__next__().shape_points):
             new_td.shapes.add(**row)
-        self.assertNotEqual(iter(original_td.shapes).next(), iter(new_td.shapes).next())
+        self.assertNotEqual(iter(original_td.shapes).__next__(), iter(new_td.shapes).__next__())
 
         new_td = TransitData()
-        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).next().shape_points):
+        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).__next__().shape_points):
             edited_shape_point = new_td.shapes.add(**row)
             edited_shape_point.latitude = 0
             self.assertNotEqual(original_shape_point, edited_shape_point)
-        self.assertNotEqual(iter(original_td.shapes).next(), iter(new_td.shapes).next())
+        self.assertNotEqual(iter(original_td.shapes).__next__(), iter(new_td.shapes).__next__())
 
         new_td = TransitData()
-        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).next().shape_points):
+        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).__next__().shape_points):
             edited_shape_point = new_td.shapes.add(**row)
             edited_shape_point.longitude = 0
             self.assertNotEqual(original_shape_point, edited_shape_point)
-        self.assertNotEqual(iter(original_td.shapes).next(), iter(new_td.shapes).next())
+        self.assertNotEqual(iter(original_td.shapes).__next__(), iter(new_td.shapes).__next__())
 
         new_td = TransitData()
-        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).next().shape_points):
+        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).__next__().shape_points):
             edited_shape_point = new_td.shapes.add(**row)
             edited_shape_point.sequence += 1
             self.assertNotEqual(original_shape_point, edited_shape_point)
-        self.assertNotEqual(iter(original_td.shapes).next(), iter(new_td.shapes).next())
+        self.assertNotEqual(iter(original_td.shapes).__next__(), iter(new_td.shapes).__next__())
 
         new_td = TransitData()
-        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).next().shape_points):
+        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).__next__().shape_points):
             edited_shape_point = new_td.shapes.add(**row)
             edited_shape_point.shape_dist_traveled = 62.2
             self.assertNotEqual(original_shape_point, edited_shape_point)
-        self.assertNotEqual(iter(original_td.shapes).next(), iter(new_td.shapes).next())
+        self.assertNotEqual(iter(original_td.shapes).__next__(), iter(new_td.shapes).__next__())
 
         new_td = TransitData()
-        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).next().shape_points):
+        for row, original_shape_point in zip(FULL_SHAPE_CSV_ROWS, iter(original_td.shapes).__next__().shape_points):
             edited_shape_point = new_td.shapes.add(**row)
             edited_shape_point.attributes["test_attribute"] = "new test data"
             self.assertNotEqual(original_shape_point, edited_shape_point)
-        self.assertNotEqual(iter(original_td.shapes).next(), iter(new_td.shapes).next())
+        self.assertNotEqual(iter(original_td.shapes).__next__(), iter(new_td.shapes).__next__())
 
 
 class TestShapeCollection(unittest.TestCase):
@@ -159,7 +159,7 @@ class TestShapeCollection(unittest.TestCase):
 
             for row in rows:
                 source_td.shapes.add(**row)
-            source_shape = iter(source_td.shapes).next()
+            source_shape = iter(source_td.shapes).__next__()
             dest_shape = dest_td.shapes.add_object(source_shape, recursive=True)
             self.assertEqual(source_shape, dest_shape)
 

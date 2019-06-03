@@ -76,7 +76,7 @@ class TestStop(unittest.TestCase):
             td = TransitData()
             for row in rows:
                 stop = td.stops.add(**row)
-                self.assertListEqual(sorted(stop.get_csv_fields()), sorted(row.iterkeys()))
+                self.assertListEqual(sorted(stop.get_csv_fields()), sorted(list(row.keys())))
 
     def test_equal_operator(self):
         for rows in ALL_CSV_ROWS:

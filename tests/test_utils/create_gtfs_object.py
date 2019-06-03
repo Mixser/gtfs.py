@@ -1,5 +1,5 @@
 import csv
-from cStringIO import StringIO
+from io import StringIO
 from datetime import date, timedelta
 
 from gtfspy import TransitData

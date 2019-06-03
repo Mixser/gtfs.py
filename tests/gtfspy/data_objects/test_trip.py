@@ -64,7 +64,7 @@ class TestTrip(unittest.TestCase):
         for row in ALL_CSV_ROWS:
             td = create_full_transit_data()
             trip = td.trips.add(**row)
-            self.assertListEqual(sorted(trip.get_csv_fields()), sorted(row.iterkeys()))
+            self.assertListEqual(sorted(trip.get_csv_fields()), sorted(list(row.keys())))
 
     def test_equal_operator(self):
         for row in ALL_CSV_ROWS:

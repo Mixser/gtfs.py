@@ -3,8 +3,8 @@ from operator import attrgetter
 
 from sortedcontainers import SortedList
 
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.utils.validating import not_none_or_empty
+from .base_object import BaseGtfsObjectCollection
+from ..utils.validating import not_none_or_empty
 
 
 class ShapePoint(object):
@@ -20,7 +20,7 @@ class ShapePoint(object):
         self.longitude = float(shape_pt_lon)
         self.sequence = int(shape_pt_sequence)
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(shape_dist_traveled):
             self.attributes["shape_dist_traveled"] = float(shape_dist_traveled)
 
@@ -74,7 +74,7 @@ class Shape(object):
 
     def get_csv_fields(self):
         return ["shape_id", "shape_pt_lat", "shape_pt_lon", "shape_pt_sequence"] + \
-               list({key for shape_point in self.shape_points for key in shape_point.attributes.iterkeys()})
+               list({key for shape_point in self.shape_points for key in shape_point.attributes.keys()})
 
     def to_csv_line(self):
         for shape_point in self.shape_points:
@@ -173,7 +173,7 @@ class ShapeCollection(BaseGtfsObjectCollection):
 
     def save(self, csv_file):
         if isinstance(csv_file, str):
-            with open(csv_file, "wb") as f:
+            with open(csv_file, "w", encoding='utf-8') as f:
                 self.save(f)
         else:
             fields = []

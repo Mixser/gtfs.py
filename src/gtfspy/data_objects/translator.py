@@ -1,5 +1,7 @@
 import csv
+import io
 from collections import defaultdict
+from zipfile import ZipExtFile
 
 
 class Translator(object):
@@ -17,9 +19,14 @@ class Translator(object):
 
     def _load_file(self, csv_file):
         if isinstance(csv_file, str):
-            with open(csv_file, "rb") as f:
+            print(type(csv_file), csv_file)
+            with open(csv_file, "r") as f:
                 self._load_file(f)
+        elif isinstance(csv_file, ZipExtFile):
+            csv_file = io.TextIOWrapper(csv_file)
+            self._load_file(csv_file)
         else:
+            print(type(csv_file))
             reader = csv.DictReader(csv_file)
             for row in reader:
                 self._words[row["lang"]][row["trans_id"]] = row["translation"]
@@ -27,7 +34,7 @@ class Translator(object):
 
     def save(self, csv_file):
         if isinstance(csv_file, str):
-            with open(csv_file, "wb") as f:
+            with open(csv_file, "w") as f:
                 self.save(f)
         else:
             fields = ["trans_id", "lang", "translation"]
@@ -35,8 +42,8 @@ class Translator(object):
             writer = csv.DictWriter(csv_file, fieldnames=fields)
             writer.writeheader()
 
-            for lang_name, translations in self._words.iteritems():
-                for expression, translation in translations.iteritems():
+            for lang_name, translations in self._words.items():
+                for expression, translation in translations.items():
                     writer.writerow({"lang": lang_name, "trans_id": expression, "translation": translation})
 
     def translate(self, expression, language, if_not_exists=None):
@@ -50,7 +57,7 @@ class Translator(object):
         return self.translate(expression, language, if_not_exists=expression)
 
     def has_data(self):
-        for lang_translates in self._words.itervalues():
+        for lang_translates in self._words.values():
             if len(lang_translates) > 0:
                 return True
 

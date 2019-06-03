@@ -63,7 +63,7 @@ class TestStopTime(unittest.TestCase):
         for row in ALL_CSV_ROWS:
             td = create_full_transit_data()
             stop_time = td.add_stop_time(**row)
-            self.assertListEqual(sorted(stop_time.get_csv_fields()), sorted(row.iterkeys()))
+            self.assertListEqual(sorted(stop_time.get_csv_fields()), sorted(list(row.keys())))
 
     def test_equal_operator(self):
         for row in ALL_CSV_ROWS:

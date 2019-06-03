@@ -1,8 +1,9 @@
 import csv
+import io
 import sys
+from zipfile import ZipExtFile
 
-import gtfspy
-from gtfspy.utils.validating import not_none_or_empty
+from ..utils.validating import not_none_or_empty
 
 
 class FareRule(object):
@@ -19,7 +20,7 @@ class FareRule(object):
 
         self.fare = transit_data.fare_attributes[fare_id]
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(route_id):
             self.attributes["route_id"] = transit_data.routes[route_id]
         if not_none_or_empty(origin_id):
@@ -94,7 +95,7 @@ class FareRule(object):
         self.attributes["contains_id"] = value
 
     def get_csv_fields(self):
-        return ["fare_id"] + self.attributes.keys()
+        return ["fare_id"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(fare_id=self.fare.id, **self.attributes)
@@ -178,8 +179,11 @@ class FareRuleCollection:
 
     def _load_file(self, csv_file, ignore_errors=False, filter=None):
         if isinstance(csv_file, str):
-            with open(csv_file, "rb") as f:
+            with open(csv_file, "r") as f:
                 self._load_file(f, ignore_errors=ignore_errors, filter=filter)
+        elif isinstance(csv_file, ZipExtFile):
+            csv_file = io.TextIOWrapper(csv_file)
+            self._load_file(csv_file, ignore_errors=ignore_errors, filter=filter)
         else:
             reader = csv.DictReader(csv_file)
             for row in reader:
@@ -190,7 +194,7 @@ class FareRuleCollection:
 
     def save(self, csv_file):
         if isinstance(csv_file, str):
-            with open(csv_file, "wb") as f:
+            with open(csv_file, "w") as f:
                 self.save(f)
         else:
             fields = []
@@ -225,7 +229,7 @@ class FareRuleCollection:
 
     def __sizeof__(self):
         size = object.__sizeof__(self)
-        for k, v in self.__dict__.iteritems():
+        for k, v in self.__dict__.items():
             if k not in ["_transit_data"]:
                 size += sys.getsizeof(v)
         return size

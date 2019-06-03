@@ -9,7 +9,6 @@ class TestStrToBool(unittest.TestCase):
         self.assertTrue(str_to_bool("1"))
         self.assertTrue(str_to_bool("2"))
         self.assertTrue(str_to_bool("-1"))
-        self.assertTrue(str_to_bool(str(sys.maxint)))
 
     def test_false_string(self):
         self.assertFalse(str_to_bool(0))
@@ -38,7 +37,6 @@ class TestYesNoUnknownParser(unittest.TestCase):
         self.assertIsNone(parse_yes_no_unknown(3))
         self.assertIsNone(parse_yes_no_unknown(-1))
         self.assertIsNone(parse_yes_no_unknown(100))
-        self.assertIsNone(parse_yes_no_unknown(sys.maxint))
 
     def test_parse_bool_to_int(self):
         self.assertIn(yes_no_unknown_to_int(None), [None, 0])

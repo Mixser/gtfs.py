@@ -1,8 +1,8 @@
 import csv
+import io
 import sys
 from abc import abstractmethod
-
-import gtfspy
+from zipfile import ZipExtFile
 
 
 class BaseGtfsObjectCollection(object):
@@ -21,7 +21,7 @@ class BaseGtfsObjectCollection(object):
 
     def save(self, csv_file):
         if isinstance(csv_file, str):
-            with open(csv_file, "wb") as f:
+            with open(csv_file, "w", encoding='utf-8') as f:
                 self.save(f)
         else:
             fields = []
@@ -34,15 +34,18 @@ class BaseGtfsObjectCollection(object):
 
     def _load_file(self, csv_file, ignore_errors=False, filter=None):
         if isinstance(csv_file, str):
-            with open(csv_file, "rb") as f:
+            with open(csv_file, "r") as f:
                 self._load_file(f, ignore_errors=ignore_errors, filter=filter)
+        elif isinstance(csv_file, ZipExtFile):
+            csv_file = io.TextIOWrapper(csv_file)
+            self._load_file(csv_file, ignore_errors=ignore_errors, filter=filter)
         else:
             reader = csv.DictReader(csv_file)
             for row in reader:
                 self.add(ignore_errors=ignore_errors, condition=filter, **row)
 
     def validate(self):
-        for i, obj in self._objects.iteritems():
+        for i, obj in self._objects.items():
             assert i == obj.id
             obj.validate(self._transit_data)
 
@@ -53,7 +56,8 @@ class BaseGtfsObjectCollection(object):
         return self._objects[key]
 
     def __iter__(self):
-        return self._objects.itervalues()
+        for v in self._objects.values():
+            yield v
 
     def __contains__(self, item):
         if isinstance(item, self._objects_type):
@@ -72,7 +76,7 @@ class BaseGtfsObjectCollection(object):
 
     def __sizeof__(self):
         size = object.__sizeof__(self)
-        for k, v in self.__dict__.iteritems():
+        for k, v in self.__dict__.items():
             # TODO: change it to check if it's not a weak reference
             if k not in ["_transit_data"]:
                 size += sys.getsizeof(v)

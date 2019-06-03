@@ -1,8 +1,8 @@
 from datetime import datetime, date
 
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.utils.parsing import parse_or_default, str_to_bool
-from gtfspy.utils.validating import not_none_or_empty
+from .base_object import BaseGtfsObjectCollection
+from ..utils.parsing import parse_or_default, str_to_bool
+from ..utils.validating import not_none_or_empty
 
 
 class Service(object):
@@ -33,7 +33,16 @@ class Service(object):
         saturday = parse_or_default(saturday, False, str_to_bool)
         self.days_relevance = [sunday, monday, tuesday, wednesday, thursday, friday, saturday]
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.special_dates = []
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
+
+    @property
+    def dates_inclusions(self):
+        return {d.date for d in self.special_dates if d.exclusion_type == 1}
+
+    @property
+    def dates_exclusions(self):
+        return {d.date for d in self.special_dates if d.exclusion_type == 1}
 
     @property
     def id(self):
@@ -156,11 +165,12 @@ class Service(object):
         :rtype: bool
         """
 
-        return self.days_relevance[date.isoweekday() % 7]
+        return self.days_relevance[date.isoweekday() % 7] and date not in self.dates_exclusions \
+            or date in self.dates_inclusions
 
     def get_csv_fields(self):
         return ["service_id", "start_date", "end_date", "sunday", "monday", "tuesday", "wednesday", "thursday",
-                "friday", "saturday"] + self.attributes.keys()
+                "friday", "saturday"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         return dict(service_id=self.id,

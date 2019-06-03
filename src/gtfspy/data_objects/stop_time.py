@@ -1,8 +1,7 @@
 from datetime import timedelta
 
-import gtfspy
-from gtfspy.utils.time import parse_timedelta, str_timedelta
-from gtfspy.utils.validating import not_none_or_empty, validate_true_false
+from ..utils.time import parse_timedelta, str_timedelta
+from ..utils.validating import not_none_or_empty, validate_true_false
 
 
 class StopTime(object):
@@ -28,7 +27,7 @@ class StopTime(object):
         self.stop = transit_data.stops[int(stop_id)]
         self.stop_sequence = int(stop_sequence)
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(pickup_type):
             self.attributes["pickup_type"] = int(pickup_type)
         if not_none_or_empty(drop_off_type):
@@ -153,7 +152,7 @@ class StopTime(object):
         self.attributes["timepoint"] = int(value)
 
     def get_csv_fields(self):
-        return ["trip_id", "arrival_time", "departure_time", "stop_id", "stop_sequence"] + self.attributes.keys()
+        return ["trip_id", "arrival_time", "departure_time", "stop_id", "stop_sequence"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(trip_id=self.trip.id,

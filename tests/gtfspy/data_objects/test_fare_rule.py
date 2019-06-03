@@ -46,7 +46,7 @@ class TestFareRule(unittest.TestCase):
         for row in ALL_CSV_ROWS:
             td = create_full_transit_data()
             fare_rule = td.fare_rules.add(**row)
-            self.assertListEqual(sorted(fare_rule.get_csv_fields()), sorted(row.iterkeys()))
+            self.assertListEqual(sorted(fare_rule.get_csv_fields()), sorted(list(row.keys())))
 
     def test_equal_operator(self):
         for row in ALL_CSV_ROWS:

@@ -1,7 +1,6 @@
-import gtfspy
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
-from gtfspy.utils.validating import not_none_or_empty, validate_true_false, validate_yes_no_unknown
+from .base_object import BaseGtfsObjectCollection
+from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
+from ..utils.validating import not_none_or_empty, validate_true_false, validate_yes_no_unknown
 
 
 class Stop(object):
@@ -29,7 +28,7 @@ class Stop(object):
         self.stop_lat = float(stop_lat)
         self.stop_lon = float(stop_lon)
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(stop_code):
             self.attributes["stop_code"] = str(stop_code)
         if not_none_or_empty(stop_desc):
@@ -185,7 +184,7 @@ class Stop(object):
         self.attributes["wheelchair_boarding"] = yes_no_unknown_to_int(value)
 
     def get_csv_fields(self):
-        return ["stop_id", "stop_name", "stop_lat", "stop_lon"] + self.attributes.keys()
+        return ["stop_id", "stop_name", "stop_lat", "stop_lon"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(stop_id=self.id,

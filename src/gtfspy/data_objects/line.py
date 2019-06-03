@@ -1,7 +1,6 @@
 import itertools
 
-import gtfspy
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
+from .base_object import BaseGtfsObjectCollection
 
 
 class Line(object):

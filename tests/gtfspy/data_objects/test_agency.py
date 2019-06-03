@@ -1,6 +1,7 @@
 import unittest
 
 from gtfspy import TransitData
+
 from test_utils.test_case_utils import test_property
 
 MINI_AGENCY_CSV_ROW = dict(agency_id=1, agency_name="agency name", agency_url="http://www.agencyname.com/",
@@ -61,7 +62,7 @@ class TestAgency(unittest.TestCase):
         for row in ALL_CSV_ROWS:
             td = TransitData()
             agency = td.agencies.add(**row)
-            self.assertListEqual(sorted(agency.get_csv_fields()), sorted(row.iterkeys()))
+            self.assertListEqual(sorted(agency.get_csv_fields()), sorted(list(row.keys())))
 
     def test_equal_operator(self):
         for row in ALL_CSV_ROWS:

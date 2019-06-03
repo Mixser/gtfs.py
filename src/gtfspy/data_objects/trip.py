@@ -3,10 +3,9 @@ from operator import attrgetter
 
 from sortedcontainers import SortedList
 
-import gtfspy
-from gtfspy.data_objects.base_object import BaseGtfsObjectCollection
-from gtfspy.utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
-from gtfspy.utils.validating import not_none_or_empty, validate_yes_no_unknown
+from .base_object import BaseGtfsObjectCollection
+from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
+from ..utils.validating import not_none_or_empty, validate_yes_no_unknown
 
 
 class Trip(object):
@@ -32,7 +31,7 @@ class Trip(object):
         self.route = transit_data.routes[route_id]
         self.service = transit_data.calendar[int(service_id)]
 
-        self.attributes = {k: v for k, v in kwargs.iteritems() if not_none_or_empty(v)}
+        self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(trip_headsign):
             self.attributes["trip_headsign"] = str(trip_headsign)
         if not_none_or_empty(trip_short_name):
@@ -218,7 +217,7 @@ class Trip(object):
             i += day_interval
 
     def get_csv_fields(self):
-        return ["trip_id", "route_id", "service_id"] + self.attributes.keys()
+        return ["trip_id", "route_id", "service_id"] + list(self.attributes.keys())
 
     def to_csv_line(self):
         result = dict(trip_id=self.id,
