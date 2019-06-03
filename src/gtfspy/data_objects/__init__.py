@@ -4,6 +4,7 @@ from .fare_rule import *
 from .line import *
 from .route import *
 from .service import *
+from .service_dates import *
 from .shape import *
 from .stop import *
 from .stop_time import *

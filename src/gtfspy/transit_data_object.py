@@ -160,6 +160,18 @@ class TransitData(object):
                     for stop_time in trip.stop_times:
                         writer.writerow(stop_time.to_csv_line())
 
+            fields = ["service_id", "date", "exception_type"]
+            for c in self.calendar:
+                for service_date in c.special_dates:
+                    fields += (field for field in service_date.get_csv_fields() if field not in fields)
+
+            with open(os.path.join(tempdir, "calendar_dates.txt"), "w", encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=fields, restval=None)
+                writer.writeheader()
+                for c in self.calendar:
+                    for service_date in c.special_dates:
+                        writer.writerow(service_date.to_csv_line())
+
             if self.translator.has_data():
                 with open(os.path.join(tempdir, "translations.txt"), "w", encoding='utf-8') as f:
                     self.translator.save(f)
@@ -218,6 +230,13 @@ class TransitData(object):
         stop_time.trip.stop_times.add(stop_time)
         stop_time.stop.stop_times.append(stop_time)
         return stop_time
+
+    def add_service_date(self, **kwargs):
+        service_date = ServiceDate(transit_data=self, **kwargs)
+
+        self._changed()
+        service_date.service.special_dates.append(service_date)
+        return service_date
 
     def add_stop_time_object(self, stop_time, recursive=False):
         assert isinstance(stop_time, StopTime)
