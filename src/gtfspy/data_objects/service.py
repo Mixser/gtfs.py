@@ -191,7 +191,6 @@ class Service(object):
         """
 
         assert self.start_date <= self.end_date
-        assert True in self.days_relevance
 
     def __eq__(self, other):
         if not isinstance(other, Service):

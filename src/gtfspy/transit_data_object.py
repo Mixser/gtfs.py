@@ -108,9 +108,6 @@ class TransitData(object):
 
                 if partial is not None:
                     self.fare_attributes.clean()
-            else:
-                assert "fare_attributes.txt" in zip_files_list
-                assert "fare_rules.txt" in zip_files_list
 
             for inner_file in zip_file.filelist:
                 # TODO: collect this known files list on reading
