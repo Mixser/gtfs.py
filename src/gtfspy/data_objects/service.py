@@ -38,11 +38,11 @@ class Service(object):
 
     @property
     def dates_inclusions(self):
-        return {d.date for d in self.special_dates if d.exclusion_type == 1}
+        return {d.date for d in self.special_dates if d.exception_type == 1}
 
     @property
     def dates_exclusions(self):
-        return {d.date for d in self.special_dates if d.exclusion_type == 1}
+        return {d.date for d in self.special_dates if d.exception_type == 1}
 
     @property
     def id(self):

@@ -14,6 +14,7 @@ class TransitData(object):
         self.routes = RouteCollection(self)
         self.shapes = ShapeCollection(self)
         self.calendar = ServiceCollection(self)
+        self.calendar_dates = ServiceDateCollection(self)
         self.trips = TripCollection(self)
         self.stops = StopCollection(self)
         self.translator = Translator()
@@ -62,6 +63,10 @@ class TransitData(object):
 
             with zip_file.open("calendar.txt", "r") as calendar_file:
                 self.calendar._load_file(calendar_file, ignore_errors=partial is not None)
+
+            if 'calendar_dates.txt' in zip_files_list:
+                with zip_file.open("calendar_dates.txt", "r") as calendar_dates_file:
+                    self.calendar_dates._load_file(calendar_dates_file, ignore_errors=partial is not None)
 
             with zip_file.open("trips.txt", "r") as trips_file:
                 self.trips._load_file(trips_file, ignore_errors=partial is not None)
@@ -208,6 +213,8 @@ class TransitData(object):
             self.routes.add_object(obj, recursive=recursive)
         elif isinstance(obj, Service):
             self.calendar.add_object(obj, recursive=recursive)
+        elif isinstance(obj, ServiceDate):
+            self.calendar_dates.add_object(obj, recursive=recursive)
         elif isinstance(obj, Shape):
             self.shapes.add_object(obj, recursive=recursive)
         elif isinstance(obj, Stop):
@@ -229,11 +236,7 @@ class TransitData(object):
         return stop_time
 
     def add_service_date(self, **kwargs):
-        service_date = ServiceDate(transit_data=self, **kwargs)
-
-        self._changed()
-        service_date.service.special_dates.append(service_date)
-        return service_date
+        return self.calendar_dates.add(**kwargs)
 
     def add_stop_time_object(self, stop_time, recursive=False):
         assert isinstance(stop_time, StopTime)
