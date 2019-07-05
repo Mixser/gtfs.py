@@ -2,6 +2,9 @@ from datetime import timedelta
 
 
 def parse_timedelta(time_string):
+    if time_string is None:
+        return None
+
     if isinstance(time_string, timedelta):
         return time_string
 
@@ -14,7 +17,8 @@ def str_timedelta(time_delta):
     :rtype: str
     :type time_delta: timedelta
     """
-
+    if time_delta is None:
+        return ''
     total_seconds = time_delta.total_seconds()
     hours = total_seconds // (60 * 60)
     minutes = (total_seconds % (60 * 60)) // 60
