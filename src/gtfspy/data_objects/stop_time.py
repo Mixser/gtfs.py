@@ -174,8 +174,8 @@ class StopTime(object):
         assert self.allow_pickup or self.allow_drop_off
         assert validate_true_false(self.attributes.get("pickup_type", 0))
         assert validate_true_false(self.attributes.get("drop_off_type", 0))
-        assert self.arrival_time is not None or self.departure_time is not None
-        assert self.arrival_time is None or self.departure_time is None or self.arrival_time <= self.departure_time
+        if self.arrival_time is not None and self.departure_time is not None:
+            assert self.arrival_time <= self.departure_time
 
     def __eq__(self, other):
         if not isinstance(other, StopTime):

@@ -2,7 +2,7 @@ from datetime import timedelta
 
 
 def parse_timedelta(time_string):
-    if time_string is None:
+    if not time_string:
         return None
 
     if isinstance(time_string, timedelta):
