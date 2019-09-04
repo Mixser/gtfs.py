@@ -1,5 +1,7 @@
 from .base_object import BaseGtfsObjectCollection
 from ..utils.validating import not_none_or_empty
+from ..utils.parsing import int_or_string_id
+
 
 
 class Route(object):
@@ -25,7 +27,7 @@ class Route(object):
         self.route_long_name = route_long_name
         # TODO: create dedicated object to route type
         self.route_type = int(route_type)
-        self.agency = transit_data.agencies[int(agency_id)]
+        self.agency = transit_data.agencies[int_or_string_id(agency_id)]
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(route_desc):

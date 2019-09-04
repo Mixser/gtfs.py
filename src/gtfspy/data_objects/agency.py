@@ -1,6 +1,7 @@
 from .base_object import BaseGtfsObjectCollection
 from .line import LineCollection
 from ..utils.validating import not_none_or_empty
+from ..utils.parsing import int_or_string_id
 
 
 class Agency(object):
@@ -17,8 +18,7 @@ class Agency(object):
         :type agency_email: str | None
         :type agency_fare_url: str | None
         """
-
-        self._id = int(agency_id)
+        self._id = int_or_string_id(agency_id)
         self.agency_name = agency_name
         self.agency_url = agency_url
         self.agency_timezone = agency_timezone

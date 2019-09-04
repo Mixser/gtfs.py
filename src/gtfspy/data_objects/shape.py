@@ -5,6 +5,7 @@ from sortedcontainers import SortedList
 
 from .base_object import BaseGtfsObjectCollection
 from ..utils.validating import not_none_or_empty
+from ..utils.parsing import int_or_string_id
 
 
 class ShapePoint(object):
@@ -63,8 +64,7 @@ class Shape(object):
         """
         :type shape_id: str | int
         """
-
-        self._id = int(shape_id)
+        self._id = int_or_string_id(shape_id)
 
         self.shape_points = SortedList(key=attrgetter("sequence"))
 

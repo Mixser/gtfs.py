@@ -1,5 +1,5 @@
 from .base_object import BaseGtfsObjectCollection
-from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
+from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int, int_or_string_id
 from ..utils.validating import not_none_or_empty, validate_true_false, validate_yes_no_unknown
 
 
@@ -22,8 +22,7 @@ class Stop(object):
         :type stop_timezone: str | None
         :type wheelchair_boarding: str | int | None
         """
-
-        self._id = int(stop_id)
+        self._id = int_or_string_id(stop_id)
         self.stop_name = stop_name
         self.stop_lat = float(stop_lat)
         self.stop_lon = float(stop_lon)

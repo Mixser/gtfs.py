@@ -4,7 +4,7 @@ from operator import attrgetter
 from sortedcontainers import SortedList
 
 from .base_object import BaseGtfsObjectCollection
-from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
+from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int, int_or_string_id
 from ..utils.validating import not_none_or_empty, validate_yes_no_unknown
 
 
@@ -29,7 +29,7 @@ class Trip(object):
 
         self._id = trip_id
         self.route = transit_data.routes[route_id]
-        self.service = transit_data.calendar[int(service_id)]
+        self.service = transit_data.calendar[int_or_string_id(service_id)]
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(trip_headsign):
