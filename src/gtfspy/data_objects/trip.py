@@ -39,9 +39,9 @@ class Trip(object):
         if not_none_or_empty(direction_id):
             self.attributes["direction_id"] = int(direction_id)
         if not_none_or_empty(block_id):
-            self.attributes["block_id"] = int(block_id)
+            self.attributes["block_id"] = int_or_string_id(block_id)
         if not_none_or_empty(shape_id):
-            self.attributes["shape_id"] = transit_data.shapes[int(shape_id)]
+            self.attributes["shape_id"] = transit_data.shapes[int_or_string_id(shape_id)]
         if not_none_or_empty(bikes_allowed):
             if isinstance(bikes_allowed, bool):
                 self.attributes["bikes_allowed"] = yes_no_unknown_to_int(bikes_allowed)

@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from ..utils.time import parse_timedelta, str_timedelta
-from ..utils.validating import not_none_or_empty, validate_true_false
+from ..utils.validating import not_none_or_empty, validate_true_false, validate_pickup_drop_off_types
 from ..utils.parsing import int_or_string_id
 
 
@@ -172,9 +172,8 @@ class StopTime(object):
         assert transit_data.trips[self.trip.id] is self.trip
         assert transit_data.stops[self.stop.id] is self.stop
 
-        assert self.allow_pickup or self.allow_drop_off
-        assert validate_true_false(self.attributes.get("pickup_type", 0))
-        assert validate_true_false(self.attributes.get("drop_off_type", 0))
+        assert validate_pickup_drop_off_types(self.attributes.get("pickup_type", 0))
+        assert validate_pickup_drop_off_types(self.attributes.get("drop_off_type", 0))
         if self.arrival_time is not None and self.departure_time is not None:
             assert self.arrival_time <= self.departure_time
 

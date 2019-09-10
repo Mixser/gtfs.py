@@ -113,7 +113,7 @@ class ShapeCollection(BaseGtfsObjectCollection):
 
     def add(self, ignore_errors=False, condition=None, **kwargs):
         try:
-            shape_id = int(kwargs.pop("shape_id"))
+            shape_id = int_or_string_id(kwargs.pop("shape_id"))
             shape_point = ShapePoint(**kwargs)
 
             if condition is not None and not condition(shape_point):
