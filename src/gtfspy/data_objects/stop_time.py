@@ -174,6 +174,11 @@ class StopTime(object):
 
         assert validate_pickup_drop_off_types(self.attributes.get("pickup_type", 0))
         assert validate_pickup_drop_off_types(self.attributes.get("drop_off_type", 0))
+
+        # TODO: create same validation for last stop times
+        if self.stop_sequence == 0:
+            assert self.arrival_time is not None
+            assert self.departure_time is not None
         if self.arrival_time is not None and self.departure_time is not None:
             assert self.arrival_time <= self.departure_time
 

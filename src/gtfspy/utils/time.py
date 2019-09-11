@@ -2,11 +2,11 @@ from datetime import timedelta
 
 
 def parse_timedelta(time_string):
-    if not time_string:
-        return None
-
     if isinstance(time_string, timedelta):
         return time_string
+
+    if not time_string:
+        return None
 
     hours, minutes, seconds = map(int, time_string.split(':'))
     return timedelta(hours=hours, minutes=minutes, seconds=seconds)
