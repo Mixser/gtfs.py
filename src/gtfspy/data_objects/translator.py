@@ -20,7 +20,7 @@ class Translator(object):
     def _load_file(self, csv_file):
         if isinstance(csv_file, str):
             print(type(csv_file), csv_file)
-            with open(csv_file, "r") as f:
+            with open(csv_file, "r", encoding='utf-8-sig') as f:
                 self._load_file(f)
         elif isinstance(csv_file, ZipExtFile):
             csv_file = io.TextIOWrapper(csv_file)

@@ -179,7 +179,7 @@ class FareRuleCollection:
 
     def _load_file(self, csv_file, ignore_errors=False, filter=None):
         if isinstance(csv_file, str):
-            with open(csv_file, "r") as f:
+            with open(csv_file, "r", encoding='utf-8-sig') as f:
                 self._load_file(f, ignore_errors=ignore_errors, filter=filter)
         elif isinstance(csv_file, ZipExtFile):
             csv_file = io.TextIOWrapper(csv_file)
