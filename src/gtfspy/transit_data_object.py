@@ -58,8 +58,9 @@ class TransitData(object):
                     for agency in self.agencies:
                         agency.lines.clean()
 
-            with zip_file.open("shapes.txt", "r") as shapes_file:
-                self.shapes._load_file(shapes_file, ignore_errors=partial is not None)
+            if 'shapes.txt' in zip_files_list:
+                with zip_file.open("shapes.txt", "r") as shapes_file:
+                    self.shapes._load_file(shapes_file, ignore_errors=partial is not None)
 
             with zip_file.open("calendar.txt", "r") as calendar_file:
                 self.calendar._load_file(calendar_file, ignore_errors=partial is not None)

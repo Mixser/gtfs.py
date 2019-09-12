@@ -96,7 +96,7 @@ class FareAttribute(object):
         # TODO: validate ISO4217 codes
         assert self.price >= 0
         assert self.payment_method in range(0, 2)
-        assert self.transfers in range(0, 3)
+        assert self.transfers is None or self.transfers in range(0, 3)
         assert self.transfer_duration is None or self.transfer_duration >= 0
 
     def __eq__(self, other):
