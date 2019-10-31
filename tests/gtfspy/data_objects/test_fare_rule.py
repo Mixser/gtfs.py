@@ -4,7 +4,7 @@ from test_utils.create_gtfs_object import create_full_transit_data
 from test_utils.test_case_utils import test_property, test_attribute
 
 MINI_FARE_RULE_CSV_ROW = dict(fare_id="1")
-FULL_FARE_RULE_CSV_ROW = dict(fare_id="1", route_id="1001", origin_id=7, destination_id=8, contains_id=8,
+FULL_FARE_RULE_CSV_ROW = dict(fare_id="1", route_id=1001, origin_id=7, destination_id=8, contains_id=8,
                               test_attribute="test data")
 ALL_CSV_ROWS = [MINI_FARE_RULE_CSV_ROW, FULL_FARE_RULE_CSV_ROW]
 
@@ -15,7 +15,7 @@ class TestFareRule(unittest.TestCase):
         fare_rule = td.fare_rules.add(**MINI_FARE_RULE_CSV_ROW)
 
         test_property(self, fare_rule, property_name="fare", new_value=td.fare_attributes["2"])
-        test_property(self, fare_rule, property_name="route", new_value=td.routes["1002"])
+        test_property(self, fare_rule, property_name="route", new_value=td.routes[1002])
         test_property(self, fare_rule, property_name="origin_id", new_value=1)
         test_property(self, fare_rule, property_name="destination_id", new_value=1)
         test_property(self, fare_rule, property_name="contains_id", new_value=1)
@@ -28,7 +28,7 @@ class TestFareRule(unittest.TestCase):
         fare_rule = td.fare_rules.add(**FULL_FARE_RULE_CSV_ROW)
 
         test_property(self, fare_rule, property_name="fare", new_value=td.fare_attributes["2"])
-        test_property(self, fare_rule, property_name="route", new_value=td.routes["1002"])
+        test_property(self, fare_rule, property_name="route", new_value=td.routes[1002])
         test_property(self, fare_rule, property_name="origin_id", new_value=2)
         test_property(self, fare_rule, property_name="destination_id", new_value=1)
         test_property(self, fare_rule, property_name="contains_id", new_value=1)
@@ -67,7 +67,7 @@ class TestFareRule(unittest.TestCase):
 
         new_td = create_full_transit_data()
         edited_fare_rule = new_td.fare_rules.add(**FULL_FARE_RULE_CSV_ROW)
-        edited_fare_rule.route = new_td.routes["1002"]
+        edited_fare_rule.route = new_td.routes[1002]
         self.assertNotEqual(original_fare_rule, edited_fare_rule)
 
         new_td = create_full_transit_data()

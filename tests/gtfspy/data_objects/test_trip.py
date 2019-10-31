@@ -4,8 +4,8 @@ from gtfspy.utils.parsing import parse_yes_no_unknown
 from test_utils.create_gtfs_object import create_full_transit_data
 from test_utils.test_case_utils import test_property, test_attribute
 
-MINI_TRIP_CSV_ROW = dict(trip_id="1", route_id="1001", service_id=1)
-FULL_TRIP_CSV_ROW = dict(trip_id="1", route_id="1001", service_id=1, trip_headsign="test headsign", trip_short_name="1",
+MINI_TRIP_CSV_ROW = dict(trip_id=1, route_id=1001, service_id=1)
+FULL_TRIP_CSV_ROW = dict(trip_id=1, route_id=1001, service_id=1, trip_headsign="test headsign", trip_short_name="1",
                          direction_id=1, block_id=1, shape_id=1, bikes_allowed=1, wheelchair_accessible=2,
                          original_trip_id="1 origin", test_attribute="test data")
 ALL_CSV_ROWS = [MINI_TRIP_CSV_ROW, FULL_TRIP_CSV_ROW]
@@ -19,7 +19,7 @@ class TestTrip(unittest.TestCase):
         self.assertTrue(hasattr(trip, "id"))
         self.assertRaises(Exception, setattr, trip, "id", "2")
 
-        test_property(self, trip, property_name="route", new_value=td.routes["1002"])
+        test_property(self, trip, property_name="route", new_value=td.routes[1002])
         test_property(self, trip, property_name="service", new_value=td.calendar[2])
         test_property(self, trip, property_name="trip_headsign", new_value="new headsign")
         test_property(self, trip, property_name="trip_short_name", new_value="2")
@@ -40,7 +40,7 @@ class TestTrip(unittest.TestCase):
         self.assertTrue(hasattr(trip, "id"))
         self.assertRaises(Exception, setattr, trip, "id", "2")
 
-        test_property(self, trip, property_name="route", new_value=td.routes["1002"])
+        test_property(self, trip, property_name="route", new_value=td.routes[1002])
         test_property(self, trip, property_name="service", new_value=td.calendar[2])
         test_property(self, trip, property_name="trip_headsign", new_value="new headsign")
         test_property(self, trip, property_name="trip_short_name", new_value="2")
@@ -86,7 +86,7 @@ class TestTrip(unittest.TestCase):
 
         new_td = create_full_transit_data()
         edited_trip = new_td.trips.add(**FULL_TRIP_CSV_ROW)
-        edited_trip.route = new_td.routes["1002"]
+        edited_trip.route = new_td.routes[1002]
         self.assertNotEqual(original_trip, edited_trip)
 
         new_td = create_full_transit_data()
@@ -153,7 +153,6 @@ class TestTripCollection(unittest.TestCase):
             trip = td.trips.add(**row)
             self.assertIn(trip, td.trips)
 
-            self.assertIsInstance(trip.id, str)
             self.assertEqual(trip.id, row["trip_id"])
 
             self.assertEqual(trip.route, td.routes[row.get("route_id")])

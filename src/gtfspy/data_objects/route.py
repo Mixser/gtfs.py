@@ -22,7 +22,7 @@ class Route(object):
         :type route_sort_order: str | int | None
         """
 
-        self._id = route_id
+        self._id = int_or_string_id(route_id)
         self.route_short_name = route_short_name
         self.route_long_name = route_long_name
         # TODO: create dedicated object to route type

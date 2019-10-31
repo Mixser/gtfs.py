@@ -33,13 +33,13 @@ class Stop(object):
         if not_none_or_empty(stop_desc):
             self.attributes["stop_desc"] = str(stop_desc)
         if not_none_or_empty(zone_id):
-            self.attributes["zone_id"] = int(zone_id)
+            self.attributes["zone_id"] = int_or_string_id(zone_id)
         if not_none_or_empty(stop_url):
             self.attributes["stop_url"] = str(stop_url)
         if not_none_or_empty(location_type):
             self.attributes["location_type"] = int(location_type)
         if not_none_or_empty(parent_station):
-            self.attributes["parent_station"] = transit_data.stops[int(parent_station)]
+            self.attributes["parent_station"] = transit_data.stops[int_or_string_id(parent_station)]
         if not_none_or_empty(stop_timezone):
             self.attributes["stop_timezone"] = str(stop_timezone)
         if not_none_or_empty(wheelchair_boarding):

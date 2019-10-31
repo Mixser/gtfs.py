@@ -3,8 +3,8 @@ import unittest
 from test_utils.create_gtfs_object import create_full_transit_data
 from test_utils.test_case_utils import test_property, test_attribute
 
-MINI_ROUTE_CSV_ROW = dict(route_id="1", route_short_name="1", route_long_name="test route", route_type=3, agency_id=1)
-FULL_ROUTE_CSV_ROW = dict(route_id="1", route_short_name="1", route_long_name="test route", route_type=3, agency_id=1,
+MINI_ROUTE_CSV_ROW = dict(route_id=1, route_short_name="1", route_long_name="test route", route_type=3, agency_id=1)
+FULL_ROUTE_CSV_ROW = dict(route_id=1, route_short_name="1", route_long_name="test route", route_type=3, agency_id=1,
                           route_desc="route desc", route_url="http://routeurl.com/", route_color="FF9933",
                           route_text_color="0077CC", route_sort_order=1, test_attribute="test data")
 ALL_CSV_ROWS = [MINI_ROUTE_CSV_ROW, FULL_ROUTE_CSV_ROW]
@@ -140,7 +140,6 @@ class TestRouteCollection(unittest.TestCase):
             route = td.routes.add(**row)
             self.assertIn(route, td.routes)
 
-            self.assertIsInstance(route.id, str)
             self.assertEqual(route.id, row["route_id"])
 
             self.assertEqual(route.route_short_name, row.get("route_short_name"))

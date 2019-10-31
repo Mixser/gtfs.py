@@ -27,8 +27,8 @@ class Trip(object):
         :type original_trip_id: str | None
         """
 
-        self._id = trip_id
-        self.route = transit_data.routes[route_id]
+        self._id = int_or_string_id(trip_id)
+        self.route = transit_data.routes[int_or_string_id(route_id)]
         self.service = transit_data.calendar[int_or_string_id(service_id)]
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}

@@ -1,6 +1,6 @@
 from .agency import Agency
 from .base_object import BaseGtfsObjectCollection
-from ..utils.parsing import parse_or_default
+from ..utils.parsing import parse_or_default, int_or_string_id
 from ..utils.validating import not_none_or_empty
 
 
@@ -16,7 +16,7 @@ class FareAttribute(object):
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(agency_id):
-            self.attributes["agency_id"] = transit_data.agencies[int(agency_id)]
+            self.attributes["agency_id"] = transit_data.agencies[int_or_string_id(agency_id)]
         if not_none_or_empty(transfer_duration):
             self.attributes["transfer_duration"] = int(transfer_duration)
 
