@@ -1,8 +1,7 @@
 from datetime import timedelta
 
 from ..utils.time import parse_timedelta, str_timedelta
-from ..utils.validating import not_none_or_empty, validate_true_false, validate_pickup_drop_off_types
-from ..utils.parsing import int_or_string_id
+from ..utils.validating import not_none_or_empty, validate_pickup_drop_off_types
 
 
 class StopTime(object):
@@ -22,10 +21,10 @@ class StopTime(object):
         :type timepoint: str | int | None
         """
 
-        self.trip = transit_data.trips[trip_id]
+        self.trip = transit_data.trips[str(trip_id)]
         self.arrival_time = parse_timedelta(arrival_time)
         self.departure_time = parse_timedelta(departure_time)
-        self.stop = transit_data.stops[int_or_string_id(stop_id)]
+        self.stop = transit_data.stops[str(stop_id)]
         self.stop_sequence = int(stop_sequence)
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}

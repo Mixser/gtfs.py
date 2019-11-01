@@ -3,8 +3,8 @@ import unittest
 from test_utils.create_gtfs_object import create_full_transit_data
 from test_utils.test_case_utils import test_property, test_attribute
 
-MINI_ROUTE_CSV_ROW = dict(route_id=1, route_short_name="1", route_long_name="test route", route_type=3, agency_id=1)
-FULL_ROUTE_CSV_ROW = dict(route_id=1, route_short_name="1", route_long_name="test route", route_type=3, agency_id=1,
+MINI_ROUTE_CSV_ROW = dict(route_id='1', route_short_name="1", route_long_name="test route", route_type=3, agency_id='1')
+FULL_ROUTE_CSV_ROW = dict(route_id='1', route_short_name="1", route_long_name="test route", route_type=3, agency_id='1',
                           route_desc="route desc", route_url="http://routeurl.com/", route_color="FF9933",
                           route_text_color="0077CC", route_sort_order=1, test_attribute="test data")
 ALL_CSV_ROWS = [MINI_ROUTE_CSV_ROW, FULL_ROUTE_CSV_ROW]
@@ -21,7 +21,7 @@ class TestRoute(unittest.TestCase):
         test_property(self, route, property_name="route_short_name", new_value="2")
         test_property(self, route, property_name="route_long_name", new_value="new name")
         test_property(self, route, property_name="route_type", new_value=2)
-        test_property(self, route, property_name="agency", new_value=td.agencies[15])
+        test_property(self, route, property_name="agency", new_value=td.agencies['15'])
         test_property(self, route, property_name="route_desc", new_value="new route desc")
         test_property(self, route, property_name="route_url", new_value="http://testurl.com/")
         test_property(self, route, property_name="route_color", new_value="FFFF00")
@@ -41,7 +41,7 @@ class TestRoute(unittest.TestCase):
         test_property(self, route, property_name="route_short_name", new_value="2")
         test_property(self, route, property_name="route_long_name", new_value="new name")
         test_property(self, route, property_name="route_type", new_value=2)
-        test_property(self, route, property_name="agency", new_value=td.agencies[15])
+        test_property(self, route, property_name="agency", new_value=td.agencies['15'])
         test_property(self, route, property_name="route_desc", new_value="new route desc")
         test_property(self, route, property_name="route_url", new_value="http://testurl.com/")
         test_property(self, route, property_name="route_color", new_value="FFFF00")
@@ -93,7 +93,7 @@ class TestRoute(unittest.TestCase):
 
         new_td = create_full_transit_data()
         edited_route = new_td.routes.add(**FULL_ROUTE_CSV_ROW)
-        edited_route.agency = new_td.agencies[15]
+        edited_route.agency = new_td.agencies['15']
         self.assertNotEqual(original_route, edited_route)
 
         new_td = create_full_transit_data()

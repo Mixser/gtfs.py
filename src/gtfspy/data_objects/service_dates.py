@@ -2,7 +2,6 @@ import datetime
 
 from .base_object import BaseGtfsObjectCollection
 from ..utils.validating import not_none_or_empty
-from ..utils.parsing import int_or_string_id
 
 
 class ServiceDate(object):
@@ -13,7 +12,7 @@ class ServiceDate(object):
         :type exception_type: bool | int
         """
 
-        self.service_id = int_or_string_id(service_id)
+        self.service_id = str(service_id)
         self.service = transit_data.calendar[self.service_id]
         self.date = date if isinstance(date, datetime.date) else datetime.datetime.strptime(date, "%Y%m%d").date()
         if isinstance(exception_type, bool):

@@ -1,3 +1,4 @@
+import chardet
 import csv
 import io
 import sys
@@ -34,10 +35,13 @@ class BaseGtfsObjectCollection(object):
 
     def _load_file(self, csv_file, ignore_errors=False, filter=None):
         if isinstance(csv_file, str):
-            with open(csv_file, "r", encoding='utf-8-sig') as f:
+            with open(csv_file, "r") as f:
                 self._load_file(f, ignore_errors=ignore_errors, filter=filter)
         elif isinstance(csv_file, ZipExtFile):
-            csv_file = io.TextIOWrapper(csv_file)
+            content = csv_file.read()
+            encoding = chardet.detect(content)['encoding']
+            content = content.decode(encoding)
+            csv_file = io.StringIO(content)
             self._load_file(csv_file, ignore_errors=ignore_errors, filter=filter)
         else:
             reader = csv.DictReader(csv_file)

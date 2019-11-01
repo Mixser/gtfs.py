@@ -9,9 +9,9 @@ TOMORROW_DATE = date.today() + timedelta(days=1)
 TODAY_DATE_STR = TODAY_DATE.strftime("%Y%m%d")
 TOMORROW_DATE_STR = TOMORROW_DATE.strftime("%Y%m%d")
 
-MINI_SERVICE_CSV_ROW = dict(service_id=1, start_date=TODAY_DATE_STR, end_date=TODAY_DATE_STR, sunday=1, monday=0,
+MINI_SERVICE_CSV_ROW = dict(service_id='1', start_date=TODAY_DATE_STR, end_date=TODAY_DATE_STR, sunday=1, monday=0,
                             tuesday=0, wednesday=0, thursday=0, friday=0, saturday=0)
-FULL_SERVICE_CSV_ROW = dict(service_id=1, start_date=TODAY_DATE_STR, end_date=TOMORROW_DATE_STR, sunday=1, monday=1,
+FULL_SERVICE_CSV_ROW = dict(service_id='1', start_date=TODAY_DATE_STR, end_date=TOMORROW_DATE_STR, sunday=1, monday=1,
                             tuesday=1, wednesday=1, thursday=1, friday=1, saturday=1, test_attribute="test data")
 ALL_CSV_ROWS = [MINI_SERVICE_CSV_ROW, FULL_SERVICE_CSV_ROW]
 
@@ -153,7 +153,7 @@ class TestServiceCollection(unittest.TestCase):
             service = td.calendar.add(**row)
             self.assertIn(service, td.calendar)
 
-            self.assertIsInstance(service.id, int)
+            self.assertIsInstance(service.id, str)
             self.assertEqual(service.id, row["service_id"])
 
             self.assertEqual(service.start_date.strftime("%Y%m%d"), row.get("start_date"))

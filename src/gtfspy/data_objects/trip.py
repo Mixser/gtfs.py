@@ -4,7 +4,7 @@ from operator import attrgetter
 from sortedcontainers import SortedList
 
 from .base_object import BaseGtfsObjectCollection
-from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int, int_or_string_id
+from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
 from ..utils.validating import not_none_or_empty, validate_yes_no_unknown
 
 
@@ -27,9 +27,9 @@ class Trip(object):
         :type original_trip_id: str | None
         """
 
-        self._id = int_or_string_id(trip_id)
-        self.route = transit_data.routes[int_or_string_id(route_id)]
-        self.service = transit_data.calendar[int_or_string_id(service_id)]
+        self._id = str(trip_id)
+        self.route = transit_data.routes[str(route_id)]
+        self.service = transit_data.calendar[str(service_id)]
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(trip_headsign):
@@ -39,9 +39,9 @@ class Trip(object):
         if not_none_or_empty(direction_id):
             self.attributes["direction_id"] = int(direction_id)
         if not_none_or_empty(block_id):
-            self.attributes["block_id"] = int_or_string_id(block_id)
+            self.attributes["block_id"] = str(block_id)
         if not_none_or_empty(shape_id):
-            self.attributes["shape_id"] = transit_data.shapes[int_or_string_id(shape_id)]
+            self.attributes["shape_id"] = transit_data.shapes[str(shape_id)]
         if not_none_or_empty(bikes_allowed):
             if isinstance(bikes_allowed, bool):
                 self.attributes["bikes_allowed"] = yes_no_unknown_to_int(bikes_allowed)

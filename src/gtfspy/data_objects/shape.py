@@ -5,7 +5,6 @@ from sortedcontainers import SortedList
 
 from .base_object import BaseGtfsObjectCollection
 from ..utils.validating import not_none_or_empty
-from ..utils.parsing import int_or_string_id
 
 
 class ShapePoint(object):
@@ -64,7 +63,7 @@ class Shape(object):
         """
         :type shape_id: str | int
         """
-        self._id = int_or_string_id(shape_id)
+        self._id = str(shape_id)
 
         self.shape_points = SortedList(key=attrgetter("sequence"))
 
@@ -113,7 +112,7 @@ class ShapeCollection(BaseGtfsObjectCollection):
 
     def add(self, ignore_errors=False, condition=None, **kwargs):
         try:
-            shape_id = int_or_string_id(kwargs.pop("shape_id"))
+            shape_id = str(kwargs.pop("shape_id"))
             shape_point = ShapePoint(**kwargs)
 
             if condition is not None and not condition(shape_point):

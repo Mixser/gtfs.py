@@ -25,10 +25,3 @@ def yes_no_unknown_to_int(value):
         return 1
     else:
         return 2
-
-
-def int_or_string_id(value):
-    try:
-        return int(value)
-    except ValueError:
-        return value

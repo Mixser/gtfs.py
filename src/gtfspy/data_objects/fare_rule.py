@@ -3,7 +3,6 @@ import io
 import sys
 from zipfile import ZipExtFile
 
-from ..utils.parsing import int_or_string_id
 from ..utils.validating import not_none_or_empty
 
 
@@ -23,13 +22,13 @@ class FareRule(object):
 
         self.attributes = {k: v for k, v in kwargs.items() if not_none_or_empty(v)}
         if not_none_or_empty(route_id):
-            self.attributes["route_id"] = transit_data.routes[int_or_string_id(route_id)]
+            self.attributes["route_id"] = transit_data.routes[str(route_id)]
         if not_none_or_empty(origin_id):
-            self.attributes["origin_id"] = int_or_string_id(origin_id)
+            self.attributes["origin_id"] = str(origin_id)
         if not_none_or_empty(destination_id):
-            self.attributes["destination_id"] = int_or_string_id(destination_id)
+            self.attributes["destination_id"] = str(destination_id)
         if not_none_or_empty(contains_id):
-            self.attributes["contains_id"] = int_or_string_id(contains_id)
+            self.attributes["contains_id"] = str(contains_id)
 
     @property
     def route(self):

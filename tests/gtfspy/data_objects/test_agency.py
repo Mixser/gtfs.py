@@ -4,9 +4,9 @@ from gtfspy import TransitData
 
 from test_utils.test_case_utils import test_property
 
-MINI_AGENCY_CSV_ROW = dict(agency_id=1, agency_name="agency name", agency_url="http://www.agencyname.com/",
+MINI_AGENCY_CSV_ROW = dict(agency_id='1', agency_name="agency name", agency_url="http://www.agencyname.com/",
                            agency_timezone="Asia/Jerusalem")
-FULL_AGENCY_CSV_ROW = dict(agency_id=1, agency_name="agency name", agency_url="http://www.agencyname.com/",
+FULL_AGENCY_CSV_ROW = dict(agency_id='1', agency_name="agency name", agency_url="http://www.agencyname.com/",
                            agency_timezone="Asia/Jerusalem", agency_lang="HE", agency_phone="+972-2-1234567",
                            agency_email="mail@agencyname.com", agency_fare_url="http://www.agencyname.com/fare",
                            test_attribute="test data")
@@ -135,7 +135,7 @@ class TestAgencyCollection(unittest.TestCase):
             agency = td.agencies.add(**row)
             self.assertIn(agency, td.agencies)
 
-            self.assertIsInstance(agency.id, int)
+            self.assertIsInstance(agency.id, str)
             self.assertEqual(agency.id, row["agency_id"])
 
             self.assertEqual(agency.agency_name, row.get("agency_name"))

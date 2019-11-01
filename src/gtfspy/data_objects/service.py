@@ -1,7 +1,7 @@
 from datetime import datetime, date
 
 from .base_object import BaseGtfsObjectCollection
-from ..utils.parsing import parse_or_default, str_to_bool, int_or_string_id
+from ..utils.parsing import parse_or_default, str_to_bool
 from ..utils.validating import not_none_or_empty
 
 
@@ -20,7 +20,7 @@ class Service(object):
         :type friday: str | bool | None
         :type saturday: str | bool | None
         """
-        self._id = int_or_string_id(service_id)
+        self._id = str(service_id)
         self.start_date = start_date if isinstance(start_date, date) else datetime.strptime(start_date, "%Y%m%d").date()
         self.end_date = end_date if isinstance(end_date, date) else datetime.strptime(end_date, "%Y%m%d").date()
         sunday = parse_or_default(sunday, False, str_to_bool)

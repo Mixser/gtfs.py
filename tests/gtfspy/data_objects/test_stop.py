@@ -3,12 +3,12 @@ import unittest
 from gtfspy import TransitData
 from test_utils.test_case_utils import test_property
 
-MINI_STOP_CSV_ROWS = [dict(stop_id=1, stop_name="stop name", stop_lat=31.789467, stop_lon=35.203715)]
-FULL_STOP_CSV_ROWS = [dict(stop_id=1, stop_name="parent stop name", stop_lat=-31.789467, stop_lon=-35.203715,
+MINI_STOP_CSV_ROWS = [dict(stop_id='1', stop_name="stop name", stop_lat=31.789467, stop_lon=35.203715)]
+FULL_STOP_CSV_ROWS = [dict(stop_id='1', stop_name="parent stop name", stop_lat=-31.789467, stop_lon=-35.203715,
                            location_type=1),
-                      dict(stop_id=2, stop_name="stop name", stop_lat=-31.789467, stop_lon=-35.203715,
-                           stop_code="10001", stop_desc="stop desc", zone_id=1, stop_url="http://stopurl.com/",
-                           location_type=0, parent_station=1, stop_timezone="Asia/Jerusalem", wheelchair_boarding=True,
+                      dict(stop_id='2', stop_name="stop name", stop_lat=-31.789467, stop_lon=-35.203715,
+                           stop_code="10001", stop_desc="stop desc", zone_id='1', stop_url="http://stopurl.com/",
+                           location_type=0, parent_station='1', stop_timezone="Asia/Jerusalem", wheelchair_boarding=True,
                            test_attribute="test data")]
 ALL_CSV_ROWS = [MINI_STOP_CSV_ROWS, FULL_STOP_CSV_ROWS]
 
@@ -201,7 +201,7 @@ class TestStopCollection(unittest.TestCase):
                 stop = td.stops.add(**row)
                 self.assertIn(stop, td.stops)
 
-                self.assertIsInstance(stop.id, int)
+                self.assertIsInstance(stop.id, str)
                 self.assertEqual(stop.id, row["stop_id"])
 
                 self.assertEqual(stop.stop_name, row.get("stop_name"))

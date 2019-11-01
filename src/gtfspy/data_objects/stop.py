@@ -1,5 +1,5 @@
 from .base_object import BaseGtfsObjectCollection
-from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int, int_or_string_id
+from ..utils.parsing import parse_yes_no_unknown, yes_no_unknown_to_int
 from ..utils.validating import not_none_or_empty, validate_true_false, validate_yes_no_unknown
 
 
@@ -22,7 +22,7 @@ class Stop(object):
         :type stop_timezone: str | None
         :type wheelchair_boarding: str | int | None
         """
-        self._id = int_or_string_id(stop_id)
+        self._id = str(stop_id)
         self.stop_name = stop_name
         self.stop_lat = float(stop_lat)
         self.stop_lon = float(stop_lon)
@@ -33,13 +33,13 @@ class Stop(object):
         if not_none_or_empty(stop_desc):
             self.attributes["stop_desc"] = str(stop_desc)
         if not_none_or_empty(zone_id):
-            self.attributes["zone_id"] = int_or_string_id(zone_id)
+            self.attributes["zone_id"] = str(zone_id)
         if not_none_or_empty(stop_url):
             self.attributes["stop_url"] = str(stop_url)
         if not_none_or_empty(location_type):
             self.attributes["location_type"] = int(location_type)
         if not_none_or_empty(parent_station):
-            self.attributes["parent_station"] = transit_data.stops[int_or_string_id(parent_station)]
+            self.attributes["parent_station"] = transit_data.stops[str(parent_station)]
         if not_none_or_empty(stop_timezone):
             self.attributes["stop_timezone"] = str(stop_timezone)
         if not_none_or_empty(wheelchair_boarding):

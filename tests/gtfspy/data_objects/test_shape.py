@@ -3,11 +3,11 @@ import unittest
 from gtfspy import TransitData
 from test_utils.test_case_utils import test_property
 
-MINI_SHAPE_CSV_ROWS = [dict(shape_id=1, shape_pt_lat=31.789467, shape_pt_lon=35.203715, shape_pt_sequence=0),
-                       dict(shape_id=1, shape_pt_lat=32.055818, shape_pt_lon=34.779427, shape_pt_sequence=1)]
-FULL_SHAPE_CSV_ROWS = [dict(shape_id=1, shape_pt_lat=-31.789467, shape_pt_lon=-35.203715, shape_pt_sequence=0,
+MINI_SHAPE_CSV_ROWS = [dict(shape_id='1', shape_pt_lat=31.789467, shape_pt_lon=35.203715, shape_pt_sequence=0),
+                       dict(shape_id='1', shape_pt_lat=32.055818, shape_pt_lon=34.779427, shape_pt_sequence=1)]
+FULL_SHAPE_CSV_ROWS = [dict(shape_id='1', shape_pt_lat=-31.789467, shape_pt_lon=-35.203715, shape_pt_sequence=0,
                             shape_dist_traveled=0),
-                       dict(shape_id=1, shape_pt_lat=-32.055818, shape_pt_lon=-34.779427, shape_pt_sequence=1,
+                       dict(shape_id='1', shape_pt_lat=-32.055818, shape_pt_lon=-34.779427, shape_pt_sequence=1,
                             shape_dist_traveled=60.0, test_attribute="test data")]
 ALL_CSV_ROWS = [MINI_SHAPE_CSV_ROWS, FULL_SHAPE_CSV_ROWS]
 
@@ -149,7 +149,7 @@ class TestShapeCollection(unittest.TestCase):
             shape = td.shapes[shape_id]
             self.assertIn(shape, td.shapes)
 
-            self.assertIsInstance(shape.id, int)
+            self.assertIsInstance(shape.id, str)
             self.assertEqual(shape.id, shape_id)
 
     def test_add_object(self):

@@ -10,7 +10,7 @@ with open(os.path.join("..", "README.md"), "r") as readme_file:
 
 setup(
     name="gtfs.py",
-    version="0.2.5",
+    version="0.2.6",
     packages=find_packages(),
 
     author="Yishai Wiesner",
@@ -18,7 +18,7 @@ setup(
     description="A simple python library for parsing, editing and writing GTFS files",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    install_requires=["sortedcontainers"],
+    install_requires=["sortedcontainers", "chardet"],
     url="https://github.com/WYishai/gtfs.py",
     classifiers=[
         "Development Status :: 4 - Beta",
