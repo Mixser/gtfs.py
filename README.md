@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/wialon/gtfs.py.svg?branch=master)](https://travis-ci.com/wialon/gtfs.py)
 # gtfs.py
 
 A simple python library for parsing, editing and writing GTFS files for python3.
