@@ -1,6 +1,6 @@
 # gtfs.py
 
-A simple python library for parsing, editing and writing GTFS files.
+A simple python library for parsing, editing and writing GTFS files for python3.
 
 GTFS (General Transit Feed Specification) is a format which determined by google in order to defines a common format for public transportation static data (schedules, stops location, etc.). For more information about the format you can read [here](https://developers.google.com/transit/gtfs) and [here](https://en.wikipedia.org/wiki/General_Transit_Feed_Specification).
 
@@ -8,16 +8,15 @@ GTFS (General Transit Feed Specification) is a format which determined by google
 
 ### Installing
 
-You can install this package with pip.
+You can install this package with following command:
 
 ```shell
-pip install gtfs.py
+pip install git+https://github.com/wialon/gtfs.py@master#subdirectory=src
 ```
 
-If you want to contribute to the library code, you have to clone if from github and install it as a developer.
+If you want to contribute to the library code, you have to clone the repo from github and install it as a developer.
 
 ```shell
-git clone https://github.com/WYishai/gtfs.py.git
 cd gtfs.py
 cd src
 python setup.py develop
@@ -44,7 +43,7 @@ td = TransitData(gtfs_file_path)
 # ...
 ```
 
-Additional examples are in the [examples folder](examples) in the [GIT repository](https://github.com/WYishai/gtfs.py).
+Additional examples are in the [examples folder](examples).
 
 ## Running the tests
 
