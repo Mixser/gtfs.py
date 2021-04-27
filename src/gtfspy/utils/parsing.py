@@ -31,7 +31,7 @@ def yes_no_unknown_to_int(value):
         return 2
 
 
-def decode_file(csv_file: ZipExtFile) -> io.StringIO:
+def decode_file(csv_file):
     content = csv_file.read()
     encoding = chardet.detect(content)['encoding']
     content = content.decode(encoding)

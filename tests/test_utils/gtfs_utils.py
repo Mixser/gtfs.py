@@ -4,12 +4,11 @@ import io
 from zipfile import ZipFile
 import unittest
 
-from typing import IO, AnyStr
 
 ignored_keys = []
 
 
-def decode_file(stream: IO[AnyStr]) -> IO[str]:
+def decode_file(stream):
     content = stream.read()
     encoding = chardet.detect(content)['encoding']
     content = content.decode(encoding)
