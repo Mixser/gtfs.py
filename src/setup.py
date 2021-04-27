@@ -10,7 +10,7 @@ with open(os.path.join("..", "README.md"), "r") as readme_file:
 
 setup(
     name="gtfs.py",
-    version="0.2.6",
+    version="0.2.7",
     packages=find_packages(),
 
     author="Yishai Wiesner",

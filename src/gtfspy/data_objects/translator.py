@@ -3,6 +3,8 @@ import io
 from collections import defaultdict
 from zipfile import ZipExtFile
 
+from ..utils.parsing import decode_file
+
 
 class Translator(object):
     def __init__(self, csv_file=None, data=None):
@@ -23,7 +25,7 @@ class Translator(object):
             with open(csv_file, "r", encoding='utf-8-sig') as f:
                 self._load_file(f)
         elif isinstance(csv_file, ZipExtFile):
-            csv_file = io.TextIOWrapper(csv_file)
+            csv_file = decode_file(csv_file)
             self._load_file(csv_file)
         else:
             print(type(csv_file))

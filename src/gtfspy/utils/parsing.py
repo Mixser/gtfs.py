@@ -1,3 +1,7 @@
+import chardet
+import io
+from zipfile import ZipExtFile
+
 def str_to_bool(value):
     return bool(int(value))
 
@@ -25,3 +29,10 @@ def yes_no_unknown_to_int(value):
         return 1
     else:
         return 2
+
+
+def decode_file(csv_file: ZipExtFile) -> io.StringIO:
+    content = csv_file.read()
+    encoding = chardet.detect(content)['encoding']
+    content = content.decode(encoding)
+    return io.StringIO(content)

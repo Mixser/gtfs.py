@@ -4,6 +4,7 @@ import sys
 from zipfile import ZipExtFile
 
 from ..utils.validating import not_none_or_empty
+from ..utils.parsing import decode_file
 
 
 class FareRule(object):
@@ -182,7 +183,7 @@ class FareRuleCollection:
             with open(csv_file, "r", encoding='utf-8-sig') as f:
                 self._load_file(f, ignore_errors=ignore_errors, filter=filter)
         elif isinstance(csv_file, ZipExtFile):
-            csv_file = io.TextIOWrapper(csv_file)
+            csv_file = decode_file(csv_file)
             self._load_file(csv_file, ignore_errors=ignore_errors, filter=filter)
         else:
             reader = csv.DictReader(csv_file)

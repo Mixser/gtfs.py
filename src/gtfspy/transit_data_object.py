@@ -6,6 +6,7 @@ import zipfile
 from zipfile import ZipFile
 
 from .data_objects import *
+from .utils.parsing import decode_file
 
 
 class TransitData(object):
@@ -79,7 +80,7 @@ class TransitData(object):
                 self.stops._load_file(stops_file, ignore_errors=partial is not None)
 
             with zip_file.open("stop_times.txt", "r") as stop_times_file:
-                stop_times_file = io.TextIOWrapper(stop_times_file)
+                stop_times_file = decode_file(stop_times_file) 
                 reader = csv.DictReader(stop_times_file)
                 for row in reader:
                     try:

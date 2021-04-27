@@ -1,9 +1,19 @@
 import csv
+import chardet
 import io
 from zipfile import ZipFile
 import unittest
 
+from typing import IO, AnyStr
+
 ignored_keys = []
+
+
+def decode_file(stream: IO[AnyStr]) -> IO[str]:
+    content = stream.read()
+    encoding = chardet.detect(content)['encoding']
+    content = content.decode(encoding)
+    return io.StringIO(content)
 
 
 def compare_gtfs_files(gtfs_file1, gtfs_file2, test_case):
@@ -35,12 +45,12 @@ def compare_gtfs_files(gtfs_file1, gtfs_file2, test_case):
     for file_name in files_list1:
         print('\nFile: "%s"' % (file_name,))
         with gtfs_file1.open(file_name, "r") as f:
-            fio = io.TextIOWrapper(f)
+            fio = decode_file(f)
             reader = csv.DictReader(fio)
             lines = {tuple(sorted(row.items())) for row in reader}
 
         with gtfs_file2.open(file_name, "r") as f:
-            fio = io.TextIOWrapper(f)
+            fio = decode_file(f)
             reader = csv.DictReader(fio)
             for row in reader:
                 row = tuple(sorted(row.items()))

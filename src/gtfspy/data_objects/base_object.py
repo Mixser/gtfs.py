@@ -1,9 +1,10 @@
-import chardet
 import csv
 import io
 import sys
 from abc import abstractmethod
 from zipfile import ZipExtFile
+
+from ..utils.parsing import decode_file
 
 
 class BaseGtfsObjectCollection(object):
@@ -38,10 +39,7 @@ class BaseGtfsObjectCollection(object):
             with open(csv_file, "r") as f:
                 self._load_file(f, ignore_errors=ignore_errors, filter=filter)
         elif isinstance(csv_file, ZipExtFile):
-            content = csv_file.read()
-            encoding = chardet.detect(content)['encoding']
-            content = content.decode(encoding)
-            csv_file = io.StringIO(content)
+            csv_file = decode_file(csv_file)
             self._load_file(csv_file, ignore_errors=ignore_errors, filter=filter)
         else:
             reader = csv.DictReader(csv_file)
